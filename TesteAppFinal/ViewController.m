@@ -83,7 +83,6 @@
         NSLog(@"tit = %@",[[feeds objectAtIndex:i] objectForKey: @"title"]);
         NSLog(@"link = %@",[[feeds objectAtIndex:i] objectForKey: @"link"]);
         NSLog(@"desc = %@",[[feeds objectAtIndex:i] objectForKey: @"description"]);
-        
         NSLog(@"\n");
     }
    
