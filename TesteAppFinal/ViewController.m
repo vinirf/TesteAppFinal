@@ -18,9 +18,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+   
+   
 	feeds = [[NSMutableArray alloc] init];
-    NSURL *url = [NSURL URLWithString:@"http://images.apple.com/main/rss/hotnews/hotnews.rss"];
+   // NSURL *url = [NSURL URLWithString:@"http://images.apple.com/main/rss/hotnews/hotnews.rss"];
+   
+    NSString *thePath=[[NSBundle mainBundle] pathForResource:@"Chant" ofType:@"xml"];
+    NSURL *url=[NSURL fileURLWithPath:thePath];
+   
     parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
     [parser setDelegate:self];
     [parser setShouldResolveExternalEntities:NO];
@@ -34,12 +39,10 @@
    
     element = elementName;
     
-    if ([element isEqualToString:@"item"]) {
+    if ([element isEqualToString:@"part"]) {
         
         item    = [[NSMutableDictionary alloc] init];
         title   = [[NSMutableString alloc] init];
-        link    = [[NSMutableString alloc] init];
-        description  = [[NSMutableString alloc] init];
         
     }
    
@@ -49,25 +52,18 @@
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
   
    
-    if ([element isEqualToString:@"title"]) {
+    if ([element isEqualToString:@"sign"]) {
         [title appendString:string];
     }
-    if ([element isEqualToString:@"link"]) {
-        [link appendString:string];
-    }
-    if ([element isEqualToString:@"description"]) {
-        [description appendString:string];
-    }
+   
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
    
    
-    if ([elementName isEqualToString:@"item"]) {
+    if ([elementName isEqualToString:@"part"]) {
         
-        [item setObject:title forKey:@"title"];
-        [item setObject:link forKey:@"link"];
-        [item setObject:description forKey:@"description"];
+        [item setObject:title forKey:@"sign"];
         [feeds addObject:[item copy]];
         
     }
@@ -78,11 +74,10 @@
 
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-   NSLog(@"4 ");
+ 
     for(int i=0;i<feeds.count;i++){
-        NSLog(@"tit = %@",[[feeds objectAtIndex:i] objectForKey: @"title"]);
-        NSLog(@"link = %@",[[feeds objectAtIndex:i] objectForKey: @"link"]);
-        NSLog(@"desc = %@",[[feeds objectAtIndex:i] objectForKey: @"description"]);
+        NSLog(@"tit = %@",[[feeds objectAtIndex:i] objectForKey: @"sign"]);
+   
         NSLog(@"\n");
     }
    
